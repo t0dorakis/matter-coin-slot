@@ -1,0 +1,92 @@
+body {
+  margin: 0;
+  display: flex;
+  place-items: center;
+  min-width: 320px;
+  min-height: 100vh;
+  overflow: hidden;
+}
+
+:root {
+  /* off-white */
+  --background-color: #f5f5f5;
+  --coin-color: #aaaaaa;
+  --void-color: #000000;
+}
+
+#slot {
+  position: absolute;
+  /* left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%); */
+  /* width: 32px;
+  height: 196px; */
+  background: var(--void-color);
+}
+
+.coin-holder {
+  position: absolute;
+  background: transparent;
+}
+
+#coinDestroyField {
+  position: absolute;
+  /* left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 32px;
+  height: 196px;
+  background: green; */
+  background: var(--background-color);
+  color: var(--background-color);
+}
+
+.coin {
+  position: absolute;
+  z-index: 0;
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  content: "1";
+  background: var(--coin-color);
+  /* get the mark.png from the root of the project */
+  background-image: url("../public/mark.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+.text-wrapper {
+  position: absolute;
+  left: 40px;
+  top: 40px;
+  display: flex;
+  flex-direction: column;
+  /* gap: 16px; */
+  justify-content: space-between;
+}
+
+#textBox {
+  font-family: Georgia, "Times New Roman", Times, serif;
+  font-size: 32px;
+  line-height: 120%;
+  letter-spacing: -1px;
+  max-width: 24ch;
+}
+
+p {
+  margin-block-start: 0;
+  margin-inline-end: 0;
+}
+
+#author {
+  font-family: Georgia, "Times New Roman", Times, serif;
+  font-size: 16px;
+  line-height: 120%;
+  text-align: right;
+  /* mirror text */
+  transform: scaleX(-1);
+}
+
+canvas {
+  background: var(--background-color);
+}
