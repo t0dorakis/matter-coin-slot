@@ -1,6 +1,8 @@
 import "./style.css";
 import * as Matter from "matter-js";
 import { sentences } from "./data.ts";
+//@ts-expect-error unused import
+import coinImage from "../public/Mark.png";
 
 const collisionTypes = {
   CHAIN_END: 0x0001,
