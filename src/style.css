@@ -53,6 +53,7 @@ body {
   background-image: url("../public/mark.png");
   background-size: contain;
   background-repeat: no-repeat;
+  cursor: grab;
 }
 
 .text-wrapper {
@@ -69,13 +70,18 @@ body {
   font-family: Georgia, "Times New Roman", Times, serif;
   font-size: 32px;
   line-height: 120%;
-  letter-spacing: -1px;
+  letter-spacing: -0.8px;
   max-width: 24ch;
 }
 
 p {
   margin-block-start: 0;
   margin-inline-end: 0;
+}
+
+/* hide selection */
+::selection {
+  background: transparent;
 }
 
 #author {

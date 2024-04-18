@@ -12,11 +12,8 @@ const collisionTypes = {
 // module aliases
 const Engine = Matter.Engine,
   Render = Matter.Render,
-  Runner = Matter.Runner,
   Bodies = Matter.Bodies,
-  Composite = Matter.Composite,
-  Vertices = Matter.Vertices,
-  Svg = Matter.Svg;
+  Composite = Matter.Composite;
 
 var canvas = document.getElementById("canvas") as HTMLCanvasElement;
 var width = 1000,
@@ -66,7 +63,7 @@ var render = Render.create({
   },
 });
 
-var group = Matter.Body.nextGroup(true);
+// var group = Matter.Body.nextGroup(true);
 
 const slotConfig = {
   width: 32,
@@ -223,7 +220,7 @@ for (let i = 0; i < 7; i++) {
 const coinsBodies = coins.map((coin) => coin.body);
 
 // ground is on the bottom of the screen and not visible
-const bottomGround = Bodies.rectangle(width / 2, height, width * 2, 180, {
+const bottomGround = Bodies.rectangle(width / 2, height - 40, width * 2, 180, {
   isStatic: true,
   collisionFilter: {
     category: collisionTypes.OTHER,
