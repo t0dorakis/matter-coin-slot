@@ -50,7 +50,7 @@ body {
   content: "1";
   background: var(--coin-color);
   /* get the mark.png from the root of the project */
-  background-image: url("../public/mark.png");
+  background-image: url("/Mark.png");
   background-size: contain;
   background-repeat: no-repeat;
   cursor: grab;
