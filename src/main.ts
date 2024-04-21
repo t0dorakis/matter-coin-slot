@@ -17,14 +17,12 @@ const Engine = Matter.Engine,
   Bodies = Matter.Bodies,
   Composite = Matter.Composite;
 
-var canvas = document.getElementById("canvas") as HTMLCanvasElement;
-var width = 1000,
-  height = 1000;
+const main = document.querySelector("main") as HTMLElement;
+const audio = document.getElementById("audioElement") as HTMLAudioElement;
+const canvas = document.getElementById("canvas") as HTMLCanvasElement;
 
-const matterStyle = {
-  fillStyle: "transparent",
-  strokeStyle: "transparent",
-};
+const width = 1000,
+  height = 1000;
 
 canvas.width = width;
 canvas.height = height;
@@ -32,9 +30,14 @@ canvas.height = height;
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
+const matterStyle = {
+  fillStyle: "transparent",
+  strokeStyle: "transparent",
+};
+
 window.addEventListener("resize", function () {
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
+  canvas.width = main.clientWidth;
+  canvas.height = main.clientHeight;
 });
 
 let counter = 0;
@@ -45,23 +48,48 @@ textBox.innerHTML = sentences[counter];
 const nextSentence = () => {
   counter++;
   textBox.innerHTML = sentences[counter % sentences.length];
+  slowlyRemoveTextHightlight(highlightText(textBox));
+};
+
+// higlight all chars of textBox with black on char at the time so we can animate it per char
+const highlightText = (element: HTMLElement) => {
+  const text = element.innerHTML;
+  element.innerHTML = "";
+
+  const chars = text.split("");
+  for (let i = 0; i < chars.length; i++) {
+    const char = chars[i];
+    // set a span per char with highlight
+    const span = document.createElement("span");
+    span.innerHTML = char;
+    span.style.backgroundColor = "black";
+    textBox.appendChild(span);
+  }
+  return element;
+};
+
+const slowlyRemoveTextHightlight = (element: HTMLElement) => {
+  // get all spans with highlight
+  const spans = element.querySelectorAll("span");
+  spans.forEach((span, index) => {
+    // wait ~ 50ms per span
+    setTimeout(() => {
+      span.style.backgroundColor = "transparent";
+    }, 100 * index * Math.random());
+  });
 };
 
 // create an engine
-var engine = Engine.create();
+const engine = Engine.create();
 
 // create a renderer
-var render = Render.create({
+const render = Render.create({
   canvas: canvas,
-  element: document.body,
+  element: main,
   engine: engine,
   options: {
     wireframes: false,
     background: undefined,
-
-    // showAngleIndicator: true,
-    // showCollisions: true,
-    // showVelocity: true,
   },
 });
 
@@ -106,8 +134,8 @@ const coinDestroyField = {
       [
         { x: 0, y: 0 },
         { x: 121.5, y: 121.5 },
-        { x: 121.5, y: 348 },
-        { x: 0, y: 226.5 },
+        { x: 121.5, y: 320 },
+        { x: 0, y: 200 },
       ],
     ],
     {
@@ -189,7 +217,7 @@ for (let i = 0; i < 7; i++) {
   const coinEl = document.createElement("div");
   coinEl.id = `coin${i}`;
   coinEl.classList.add("coin");
-  document.body.appendChild(coinEl);
+  main.appendChild(coinEl);
 
   coins.push({
     body: Matter.Bodies.circle(
@@ -221,32 +249,38 @@ for (let i = 0; i < 7; i++) {
 
 const coinsBodies = coins.map((coin) => coin.body);
 
-// ground is on the bottom of the screen and not visible
-const bottomGround = Bodies.rectangle(width / 2, height - 40, width * 2, 180, {
-  isStatic: true,
-  collisionFilter: {
-    category: collisionTypes.OTHER,
-  },
-});
-
-const leftBoundary = Bodies.rectangle(-13, height + 200, 26, height, {
+const boundaryConfig = {
   isStatic: true,
   collisionFilter: {
     category: collisionTypes.OTHER,
   },
   render: matterStyle,
-});
-
-const rightBoundary = Bodies.rectangle(-30, height / 2, 26, height, {
-  isStatic: true,
-  collisionFilter: {
-    category: collisionTypes.OTHER,
-  },
-  // render: matterStyle,
-});
+};
+// simplefy boundaries
+const leftBoundary = Bodies.rectangle(
+  -13,
+  height + 200,
+  26,
+  height,
+  boundaryConfig
+);
+const rightBoundary = Bodies.rectangle(
+  -30,
+  height / 2,
+  26,
+  height,
+  boundaryConfig
+);
+const bottomGround = Bodies.rectangle(
+  width / 2,
+  height - 40,
+  width * 2,
+  180,
+  boundaryConfig
+);
 
 // add mouse control
-const mouse = Matter.Mouse.create(document.body),
+const mouse = Matter.Mouse.create(main),
   mouseConstraint = Matter.MouseConstraint.create(engine, {
     mouse: mouse,
     // track document
@@ -306,10 +340,8 @@ Matter.Events.on(engine, "collisionStart", function (event) {
 });
 
 const deleteCoin = (coin: Matter.Pair) => {
-  console.log("delete coin,", coin);
-
+  audio.play();
   const removeFromDom = (label: string) => {
-    console.log("remove from dom", label);
     const coinEl = document.getElementById(`${label}`)!;
     coinEl.remove();
   };
@@ -333,7 +365,6 @@ const renderAllCoins = () => {
 };
 
 (function rerender() {
-  // box.render();
   coinDestroyField.render();
   slot.render();
   renderAllCoins();
