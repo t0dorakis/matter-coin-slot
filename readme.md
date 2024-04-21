@@ -6,6 +6,10 @@ Insert a coin in the "AI" to invent a new depressing quote by Thomas Bernhard.
 
 ![ Screen Recording ](./docs/screenrecording.gif)
 
+## Demo
+
+[On Vercel](https://matter-coin-slot-machine.vercel.app/)
+
 ## How to run
 
 ```bash

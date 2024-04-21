@@ -271,13 +271,12 @@ const rightBoundary = Bodies.rectangle(
   height,
   boundaryConfig
 );
-const bottomGround = Bodies.rectangle(
-  width / 2,
-  height - 40,
-  width * 2,
-  180,
-  boundaryConfig
-);
+const bottomGround = Bodies.rectangle(width / 2, height - 40, width * 2, 180, {
+  ...boundaryConfig,
+  render: {
+    fillStyle: "black",
+  },
+});
 
 // add mouse control
 const mouse = Matter.Mouse.create(main),
